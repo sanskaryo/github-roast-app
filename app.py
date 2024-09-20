@@ -5,69 +5,75 @@ import os
 import requests
 import google.generativeai as genai
 
-
+# Load environment variables
 load_dotenv()
 
-
+# Configure Generative AI model
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-
+# Function to get response from Gemini
 def get_gemini_response(github_data, prompt):
     model = genai.GenerativeModel('gemini-1.5-flash')
     input_text = f"GitHub User {github_data['name']} has {github_data['public_repos']} repos, {github_data['followers']} followers. Bio: {github_data['bio']}. {prompt}"
     response = model.generate_content([input_text])
     return response.text
 
-
+# Function to get GitHub profile
 def get_github_profile(username):
     github_url = f'https://api.github.com/users/{username}'
     response = requests.get(github_url)
-    
+
     if response.status_code == 200:
-        return response.json() 
+        return response.json()
     else:
         raise ValueError("Could not fetch GitHub profile. Please check the username.")
 
-
-st.set_page_config(page_title="GitHub Roast App ")
+# Streamlit app configuration
+st.set_page_config(page_title="GitHub Roast App")
 st.header("GitHub Roast App")
 
-
+# Input for GitHub username
 github_username = st.text_input("Enter GitHub Username:")
 
+# Roast level buttons
+roast_level = st.radio("Choose your roast level:", ('Easy', 'Medium', 'Heavy Driver'))
 
+# Roast prompts for each level
+easy_roast_prompt = """ 
+Summarize this GitHub user's README, bio, and projects with light-hearted humor. Give them some gentle feedback, a few funny jabs, and wrap it up with motivation. Keep it witty and encouraging, like a coding buddy who teases but believes in them! , Keep it witty and encouraging, like a coding buddy who teases but believes in them! dont make it very long
+"""
+
+medium_roast_prompt = """
+Summarize this GitHub user's README, bio, and projects. Add some harsh, sarcastic commentary on their lazy commits and unfinished projects. Don't go too soft, but offer some constructive feedback so they don’t cry… yet. dont make it very long , funny add emojis
+"""
+
+harsh_roast_prompt = """
+Rip into this GitHub user's README, bio, and projects like you're out for revenge! Mock their spaghetti code, point out their non-existent commit history, and roast every unfinished project like a Bollywood villain burning their repo alive. No kindness, no mercy—just pure, brutal honesty.
+"""
+
+# Submit button
 submit = st.button("Roast Me!")
-
-
-# roast_prompt = """
-
-# Hey there! Roast this GitHub user in a funny, witty, and humorous way,make it short and summarised ,m  but keep it light-hearted. Dive deep into their repos, bio, and activity. Remember, most of them are college students and techies from India, so throw in some techie and student life humor. Make it personal and engaging!
-
-#  Keep it short, sharp, and loaded with techie and college life humor! Dig into their repos, bio, and activity for some real gems. Just remember, most of them are college students or tech nerds from India, . make them into shambles 😜
-
-
-# """
-
-roast_prompt = """ keep it short and summarised
- Analyze this student/dev's GitHub, summarize their README, bio, and projects in the shortest way possible, and deliver a brutal roast. Tear into their messy code, weak commit history, and unfinished projects, keeping it sharp, snappy, and ruthless—while staying (barely) on the right side of savage
- """
-
-# roast_prompt = """
-
-# Analyze this student/dev's GitHub, summarize their README, bio, and projects in the shortest way possible, and deliver a brutal roast. Tear into their messy code, weak commit history, and unfinished projects, keeping it sharp, snappy, and ruthless—while staying (barely) on the right side of savage , also give slight motivation and constructive feedback at end
-# keep it summaridsed nd short - Check out this student/dev's GitHub and give a quick summary of their README, bio, and projects. Then, go full Bollywood villain mode and roast them like you’re the villain in a movie! Call out their messy code like it's a failed Bollywood remake, laugh at their lazy commits like a ‘dialogue baazi,’ and mock their unfinished projects like a flop movie. Keep it short, savage,but with just enough humor 
-# """
 
 if submit:
     if github_username:
         try:
-           
+            # Fetch GitHub profile data
             github_data = get_github_profile(github_username)
             
-           
+            # Choose the prompt based on the roast level
+            if roast_level == 'Easy':
+                roast_prompt = easy_roast_prompt
+            elif roast_level == 'Medium':
+                roast_prompt = medium_roast_prompt
+            elif roast_level == 'Heavy Driver':
+                roast_prompt = harsh_roast_prompt
+            else:
+                roast_prompt = easy_roast_prompt
+
+            # Get response from Gemini based on the roast level
             response = get_gemini_response(github_data, roast_prompt)
             
-          
+            # Display the roast
             st.subheader("The Roast:")
             st.write(response)
         except ValueError as e:
@@ -75,10 +81,7 @@ if submit:
     else:
         st.write("Please enter a GitHub username.")
 
-
-
-
-
+# Footer
 st.markdown(
     """
     <style>
