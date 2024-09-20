@@ -4,6 +4,8 @@
 
 ### Roast GitHub profiles like never before, from light-hearted fun to brutal burns!
 
+Link to the app - https://shorturl.at/tJEmr
+
 
 
 ## 📝 Project Overview
