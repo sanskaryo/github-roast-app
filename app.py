@@ -5,20 +5,20 @@ import os
 import requests
 import google.generativeai as genai
 
-# Load environment variables
+
 load_dotenv()
 
-# Configure Generative AI model
+
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-# Function to get response from Gemini
+
 def get_gemini_response(github_data, prompt):
     model = genai.GenerativeModel('gemini-1.5-flash')
     input_text = f"GitHub User {github_data['name']} has {github_data['public_repos']} repos, {github_data['followers']} followers. Bio: {github_data['bio']}. {prompt}"
     response = model.generate_content([input_text])
     return response.text
 
-# Function to get GitHub profile
+
 def get_github_profile(username):
     github_url = f'https://api.github.com/users/{username}'
     response = requests.get(github_url)
@@ -28,17 +28,17 @@ def get_github_profile(username):
     else:
         raise ValueError("Could not fetch GitHub profile. Please check the username.")
 
-# Streamlit app configuration
+
 st.set_page_config(page_title="GitHub Roast App")
 st.header("GitHub Roast App")
 
-# Input for GitHub username
+
 github_username = st.text_input("Enter GitHub Username:")
 
-# Roast level buttons
+
 roast_level = st.radio("Choose your roast level:", ('Easy', 'Medium', 'Heavy Driver'))
 
-# Roast prompts for each level
+
 easy_roast_prompt = """ 
 Summarize this GitHub user's README, bio, and projects with light-hearted humor. Give them some gentle feedback, a few funny jabs, and wrap it up with motivation. Keep it witty and encouraging, like a coding buddy who teases but believes in them! , Keep it witty and encouraging, like a coding buddy who teases but believes in them! dont make it very long
 """
@@ -51,16 +51,16 @@ harsh_roast_prompt = """
 Rip into this GitHub user's README, bio, and projects like you're out for revenge! Mock their spaghetti code, point out their non-existent commit history, and roast every unfinished project like a Bollywood villain burning their repo alive. No kindness, no mercy—just pure, brutal honesty.
 """
 
-# Submit button
+
 submit = st.button("Roast Me!")
 
 if submit:
     if github_username:
         try:
-            # Fetch GitHub profile data
+          
             github_data = get_github_profile(github_username)
             
-            # Choose the prompt based on the roast level
+          
             if roast_level == 'Easy':
                 roast_prompt = easy_roast_prompt
             elif roast_level == 'Medium':
@@ -70,10 +70,10 @@ if submit:
             else:
                 roast_prompt = easy_roast_prompt
 
-            # Get response from Gemini based on the roast level
+            
             response = get_gemini_response(github_data, roast_prompt)
             
-            # Display the roast
+           
             st.subheader("The Roast:")
             st.write(response)
         except ValueError as e:
