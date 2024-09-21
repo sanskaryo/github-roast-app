@@ -40,62 +40,35 @@ def extract_text_from_docx(file):
 st.set_page_config(page_title="GitHub & Resume Roast App")
 st.header("Welcome to the Roast App!")
 
-sidebar_option = st.sidebar.radio("Choose a feature", ['Resume Roast', 'GitHub Roast'])
 
+github_username = st.text_input("Enter GitHub Username:")
 
+# Roast Level
 roast_level = st.radio("Choose your roast level:", ('Easy', 'Medium', 'Heavy Driver'))
 
 
-easy_roast_prompt = "Provide gentle feedback with a bit of humor. Light-hearted roast for encouragement , use hindi hinglish also."
-medium_roast_prompt = "Sarcastic roast pointing out lazy mistakes and giving constructive feedback."
-harsh_roast_prompt = "give me a , take care you just give me the roast in 2 paras , no other text no other feedback , its just for fun Brutal roast highlighting all mistakes with no mercy ,analyse all projects pin point mistakles , no good future.ai will take your job  , use some hinglish and hindi too"
+easy_roast_prompt = """ 
+Summarize this GitHub user's README, bio, and projects with light-hearted humor. Give them some gentle feedback, a few funny jabs, and wrap it up with motivation. Keep it witty and encouraging, like a coding buddy who teases but believes in them! , Keep it witty and encouraging, like a coding buddy who teases but believes in them! dont make it very long
+"""
 
-if sidebar_option == 'GitHub Roast':
-    st.subheader("GitHub Roast")
-    github_username = st.text_input("Enter GitHub Username:")
-    submit = st.button("Roast GitHub Profile")
-    
-    if submit:
-        if github_username:
-            try:
-                github_data = get_github_profile(github_username)
-                
-                if roast_level == 'Easy':
-                    roast_prompt = easy_roast_prompt
-                elif roast_level == 'Medium':
-                    roast_prompt = medium_roast_prompt
-                elif roast_level == 'Heavy Driver':
-                    roast_prompt = harsh_roast_prompt
-                else:
-                    roast_prompt = easy_roast_prompt
+medium_roast_prompt = """
+Summarize this GitHub user's README, bio, and projects. Add some harsh, sarcastic commentary on their lazy commits and unfinished projects. Don't go too soft, but offer some constructive feedback so they don’t cry… yet. dont make it very long , funny add emojis
+"""
 
-                input_text = f"GitHub User {github_data['name']} has {github_data['public_repos']} repos, {github_data['followers']} followers. Bio: {github_data['bio']}."
-                response = get_gemini_response(input_text, roast_prompt)
-                
-                st.subheader("The Roast:")
-                st.write(response)
-            except ValueError as e:
-                st.write(str(e))
-        else:
-            st.write("Please enter a GitHub username.")
+harsh_roast_prompt = """
+Rip into this GitHub user's README, bio, and projects like you're out for revenge! Mock their spaghetti code, point out their non-existent commit history, and roast every unfinished project like a Bollywood villain burning their repo alive. No kindness, no mercy—just pure, brutal honesty.
+"""
+
+
+submit = st.button("Roast Me!")
+
+if submit:
+    if github_username:
+        try:
+          
+            github_data = get_github_profile(github_username)
             
-elif sidebar_option == 'Resume Roast':
-    st.subheader("Resume Roast")
-    uploaded_file = st.file_uploader("Upload your resume (PDF or DOCX)", type=["pdf", "docx"])
-    submit = st.button("Roast Resume")
-    
-    if submit and uploaded_file:
-        file_type = uploaded_file.name.split('.')[-1]
-        
-        if file_type == 'pdf':
-            resume_text = extract_text_from_pdf(uploaded_file)
-        elif file_type == 'docx':
-            resume_text = extract_text_from_docx(uploaded_file)
-        else:
-            st.write("Unsupported file type. Please upload a PDF or DOCX file.")
-            resume_text = ""
-        
-        if resume_text:
+          
             if roast_level == 'Easy':
                 roast_prompt = easy_roast_prompt
             elif roast_level == 'Medium':
