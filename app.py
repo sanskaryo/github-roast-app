@@ -184,11 +184,11 @@ input[type="text"], input[type="file"] {
     width: 100%;
     font-size: 16px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    
 }
 
 input[type="file"] {
-    background-color: #f0f0f0;
+   
 }
 
 /* Roast output styling */
