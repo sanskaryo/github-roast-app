@@ -16,7 +16,7 @@ def get_gemini_response(github_data, prompt):
     model = genai.GenerativeModel('gemini-1.5-flash')
     input_text = f"GitHub User {github_data['name']} has {github_data['public_repos']} repos, {github_data['followers']} followers. Bio: {github_data['bio']}. {prompt}"
     response = model.generate_content([input_text])
-    return response.text
+    return response.textn
 
 
 def get_github_profile(username):
