@@ -133,7 +133,7 @@ h2 {
 
 /* Sidebar Styling */
 .stSidebar {
-    background-color: #ffecb3;
+ 
     padding: 10px;
 }
 
@@ -144,7 +144,7 @@ h2 {
 .stSidebar .stRadio > div > label {
     font-size: 16px;
     padding: 10px;
-    background-color: #f0f0f0;
+    
     margin-bottom: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
