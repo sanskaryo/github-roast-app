@@ -2,3 +2,4 @@ python-dotenv
 streamlit
 requests
 google-generativeai
+PyPDF2
