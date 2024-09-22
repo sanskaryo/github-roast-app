@@ -4,7 +4,7 @@
 
 ### Roast GitHub profiles like never before, from light-hearted fun to brutal burns!
 
-Link to the app - https://shorturl.at/tJEmr
+Link to the app - https://app-roast-app-sv5hwnu7ktv6esvf95d3hh.streamlit.app/
 
 
 
